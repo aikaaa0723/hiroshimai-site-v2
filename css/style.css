@@ -970,9 +970,16 @@ body { font-weight: 300; letter-spacing: .012em; }
   font-size: clamp(26px, 5.2vw, 60px);
   font-weight: 200; letter-spacing: .08em; line-height: 1.4;
   color: #fff;
-  opacity: 0;
-  animation: introLead 5s ease forwards;
 }
+.intro-lead .intro-c { opacity: 0; transition: opacity .1s ease; }
+.intro-lead .intro-c.on { opacity: 1; }
+.intro-caret {
+  display: inline-block; margin-left: .04em;
+  color: var(--accent-2); font-weight: 300;
+  animation: introCaretBlink .68s step-end infinite;
+}
+.intro-caret.off { animation: none; opacity: 0; }
+@keyframes introCaretBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 .intro-brand {
   margin-top: 30px;
   font-family: var(--font-en);
@@ -1020,50 +1027,54 @@ body.intro-lock { overflow: hidden; }
 }
 
 /* ============================================================
-   SCROLL REVEAL — 文字が静かに立ち上がる洗練演出
+   SCROLL REVEAL — ソニー風「打ち込み型」タイプライター演出
    （.anim は head の小スクリプトが付与。JS無効/低モーション時は無効）
    ============================================================ */
-.anim .section-jp, .anim .block-head .en, .anim .block-head h2,
-.anim .lead-text, .anim .steps-lead, .anim .mission-text, .anim .mission-sub,
-.anim .page-hero .page-jp, .anim .contact-title, .anim .contact-lead,
-.anim .plans-title, .anim .rep-lead, .anim .rep-text, .anim .rep-name,
-.anim .rep-history, .anim .profile-table, .anim .pt-lead,
-.anim [data-reveal] {
+
+/* --- 打ち込み（タイプライター）：見出し・ラベル・短い文 --- */
+/* JS分割前のチラつき防止：.tw が付くまで不可視 */
+.anim .section-title:not(.tw), .anim .page-hero h1:not(.tw),
+.anim .section-jp:not(.tw), .anim .page-hero .page-jp:not(.tw),
+.anim .block-head .en:not(.tw), .anim .block-head h2:not(.tw),
+.anim .mission-text:not(.tw), .anim .contact-title:not(.tw),
+.anim .plans-title:not(.tw) { visibility: hidden; }
+
+.tw { visibility: visible; }
+.tw-word { display: inline-block; white-space: nowrap; }
+.tw-word.cjk { display: inline; white-space: normal; }
+.tw-c { opacity: 0; }
+.tw.tw-in .tw-c { opacity: 1; transition: opacity .09s ease; }
+
+/* 点滅カーソル */
+.tw-caret {
+  display: inline-block; margin-left: .04em;
+  color: var(--accent-2); opacity: 0; font-weight: 300;
+  transform: translateY(.02em);
+}
+.tw.tw-in .tw-caret { animation: twBlink .68s step-end infinite; }
+.tw.tw-done .tw-caret { animation: none; opacity: 0; }
+@keyframes twBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* --- フェード：長い段落・カード類（読みやすさのため補完演出） --- */
+.anim .lead-text, .anim .steps-lead, .anim .mission-sub, .anim .contact-lead,
+.anim .rep-lead, .anim .rep-text, .anim .rep-name, .anim .rep-history,
+.anim .profile-table, .anim .pt-lead, .anim [data-reveal] {
   opacity: 0;
-  transform: translateY(28px);
-  filter: blur(7px);
+  transform: translateY(26px);
+  filter: blur(6px);
   transition:
-    opacity 1.05s cubic-bezier(.22,.61,.36,1),
-    transform 1.05s cubic-bezier(.22,.61,.36,1),
-    filter 1.05s ease;
+    opacity 1s cubic-bezier(.22,.61,.36,1),
+    transform 1s cubic-bezier(.22,.61,.36,1),
+    filter 1s ease;
   will-change: opacity, transform;
 }
-.anim .section-jp.in, .anim .block-head .en.in, .anim .block-head h2.in,
-.anim .lead-text.in, .anim .steps-lead.in, .anim .mission-text.in, .anim .mission-sub.in,
-.anim .page-hero .page-jp.in, .anim .contact-title.in, .anim .contact-lead.in,
-.anim .plans-title.in, .anim .rep-lead.in, .anim .rep-text.in, .anim .rep-name.in,
-.anim .rep-history.in, .anim .profile-table.in, .anim .pt-lead.in,
-.anim [data-reveal].in {
+.anim .lead-text.in, .anim .steps-lead.in, .anim .mission-sub.in, .anim .contact-lead.in,
+.anim .rep-lead.in, .anim .rep-text.in, .anim .rep-name.in, .anim .rep-history.in,
+.anim .profile-table.in, .anim .pt-lead.in, .anim [data-reveal].in {
   opacity: 1;
   transform: none;
   filter: blur(0);
 }
-
-/* English display titles: word-by-word rise from a mask */
-.anim .section-title:not(.rv-ready),
-.anim .page-hero h1:not(.rv-ready) { visibility: hidden; }
-.rv-word { display: inline-block; overflow: hidden; vertical-align: top;
-  padding-bottom: .12em; margin-bottom: -.12em; }
-.rv-word-i {
-  display: inline-block;
-  transform: translateY(118%);
-  opacity: 0;
-  transition:
-    transform 1.1s cubic-bezier(.19,1,.22,1),
-    opacity 1.1s ease;
-  will-change: transform, opacity;
-}
-.rv-ready.in .rv-word-i { transform: none; opacity: 1; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {

@@ -161,7 +161,63 @@
     });
   }
 
-  /* ---- Refined scroll reveal (text rises + un-blurs, stagger) ---- */
+  /* ---- Typewriter splitter (shared; used here + by home.js) ---- */
+  function isCJK(s) { return /[　-ヿ一-鿿＀-￯]/.test(s); }
+  window.__twSplit = function (el, step) {
+    if (el.__tw) return el.__twChars || 0;
+    step = step || 42;
+    var idx = 0;
+    function walk(node, parent) {
+      Array.prototype.forEach.call(node.childNodes, function (c) {
+        if (c.nodeType === 3) {
+          c.nodeValue.split(/(\s+)/).forEach(function (tok) {
+            if (tok === "") return;
+            if (/^\s+$/.test(tok)) { parent.appendChild(document.createTextNode(tok)); return; }
+            var word = document.createElement("span");
+            word.className = "tw-word" + (isCJK(tok) ? " cjk" : "");
+            tok.split("").forEach(function (ch) {
+              var s = document.createElement("span");
+              s.className = "tw-c";
+              s.textContent = ch;
+              s.style.transitionDelay = (idx * step) + "ms";
+              idx++;
+              word.appendChild(s);
+            });
+            parent.appendChild(word);
+          });
+        } else if (c.nodeName === "BR") {
+          parent.appendChild(c.cloneNode(false));
+        } else if (c.nodeType === 1) {
+          var clone = c.cloneNode(false);
+          parent.appendChild(clone);
+          walk(c, clone);
+        }
+      });
+    }
+    var frag = document.createDocumentFragment();
+    walk(el, frag);
+    el.innerHTML = "";
+    el.appendChild(frag);
+    var caret = document.createElement("span");
+    caret.className = "tw-caret";
+    caret.textContent = "▍";
+    el.appendChild(caret);
+    el.classList.add("tw");
+    el.__tw = true;
+    el.__twChars = idx;
+    el.__twTotal = idx * step + 360;
+    return idx;
+  };
+  /* trigger one typewriter line (re-triggerable) */
+  window.__twPlay = function (el) {
+    if (!el.__tw) return;
+    el.classList.remove("tw-done");
+    el.classList.add("tw-in");
+    clearTimeout(el.__twTimer);
+    el.__twTimer = setTimeout(function () { el.classList.add("tw-done"); }, el.__twTotal);
+  };
+
+  /* ---- Scroll reveal: typewriter for headings, fade for the rest ---- */
   (function () {
     var rootEl = document.documentElement;
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -170,44 +226,19 @@
       return;
     }
 
-    /* split English display headings into word-masks for a sequential rise */
-    document.querySelectorAll(".section-title, .page-hero h1").forEach(function (el) {
-      if (el.closest(".hero")) return;
-      var text = el.textContent;
-      el.textContent = "";
-      var parts = text.split(/(\s+)/);
-      var wi = 0;
-      parts.forEach(function (p) {
-        if (p === "") return;
-        if (/^\s+$/.test(p)) { el.appendChild(document.createTextNode(p)); return; }
-        var outer = document.createElement("span");
-        outer.className = "rv-word";
-        var inner = document.createElement("span");
-        inner.className = "rv-word-i";
-        inner.textContent = p;
-        inner.style.transitionDelay = (wi * 90) + "ms";
-        outer.appendChild(inner);
-        el.appendChild(outer);
-        wi++;
-      });
-      el.classList.add("rv-ready");
-    });
+    var TW = ".section-title, .page-hero h1, .section-jp, .page-hero .page-jp, " +
+             ".block-head .en, .block-head h2, .mission-text, .contact-title, .plans-title";
+    var FADE = ".lead-text, .steps-lead, .mission-sub, .contact-lead, .rep-lead, " +
+               ".rep-text, .rep-name, .rep-history, .profile-table, .pt-lead, [data-reveal]";
 
-    /* collect reveal targets (skip anything inside the hero) */
-    var sel = [
-      ".section-title", ".page-hero h1", ".section-jp", ".block-head .en",
-      ".block-head h2", ".lead-text", ".steps-lead", ".mission-text",
-      ".mission-sub", ".page-hero .page-jp", ".contact-title", ".contact-lead",
-      ".plans-title", ".rep-lead", ".rep-text", ".rep-name", ".rep-history",
-      ".profile-table", ".pt-lead", "[data-reveal]"
-    ].join(",");
-    var nodes = Array.prototype.slice.call(document.querySelectorAll(sel))
+    var twNodes = Array.prototype.slice.call(document.querySelectorAll(TW))
       .filter(function (el) { return !el.closest(".hero"); });
+    twNodes.forEach(function (el) { window.__twSplit(el, 42); });
 
-    /* stagger siblings sharing a parent (cards, list items, head pairs) */
+    var fadeNodes = Array.prototype.slice.call(document.querySelectorAll(FADE))
+      .filter(function (el) { return !el.closest(".hero"); });
     var counts = new WeakMap();
-    nodes.forEach(function (el) {
-      if (el.classList.contains("rv-ready")) return;
+    fadeNodes.forEach(function (el) {
       var p = el.parentElement;
       var n = counts.get(p) || 0;
       counts.set(p, n + 1);
@@ -216,13 +247,13 @@
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          e.target.classList.add("in");
-          io.unobserve(e.target);
-        }
+        if (!e.isIntersecting) return;
+        if (e.target.classList.contains("tw")) window.__twPlay(e.target);
+        else e.target.classList.add("in");
+        io.unobserve(e.target);
       });
-    }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+    }, { threshold: 0.16, rootMargin: "0px 0px -6% 0px" });
 
-    nodes.forEach(function (el) { io.observe(el); });
+    twNodes.concat(fadeNodes).forEach(function (el) { io.observe(el); });
   })();
 })();

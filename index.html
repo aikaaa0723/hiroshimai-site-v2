@@ -158,11 +158,54 @@
       if (!intro) return;
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       document.body.classList.add("intro-lock");
+
+      /* type the vision line character by character (打ち込み) */
+      var lead = intro.querySelector(".intro-lead");
+      var caret = null;
+      if (lead) {
+        var chars = [];
+        var frag = document.createDocumentFragment();
+        Array.prototype.forEach.call(lead.childNodes, function (node) {
+          if (node.nodeType === 3) {
+            node.nodeValue.split("").forEach(function (ch) {
+              var s = document.createElement("span");
+              s.className = "intro-c";
+              s.textContent = ch;
+              frag.appendChild(s);
+              chars.push(s);
+            });
+          } else {
+            frag.appendChild(node.cloneNode(true));
+          }
+        });
+        lead.innerHTML = "";
+        lead.appendChild(frag);
+        caret = document.createElement("span");
+        caret.className = "intro-caret";
+        caret.textContent = "▍";
+        lead.appendChild(caret);
+
+        if (reduce) {
+          chars.forEach(function (c) { c.classList.add("on"); });
+          if (caret) caret.classList.add("off");
+        } else {
+          var START = 700, STEP = 58;
+          chars.forEach(function (c, i) {
+            setTimeout(function () { c.classList.add("on"); }, START + i * STEP);
+          });
+          setTimeout(function () { if (caret) caret.classList.add("off"); }, START + chars.length * STEP + 700);
+        }
+      }
+
       var DUR = reduce ? 400 : 5000;
+      var done = false;
       function end() {
+        if (done) return;
+        done = true;
         document.body.classList.remove("intro-lock");
         if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
         window.scrollTo(0, 0);
+        window.dispatchEvent(new Event("intro:done"));
       }
       var t = setTimeout(end, DUR);
       /* click / key to skip */
