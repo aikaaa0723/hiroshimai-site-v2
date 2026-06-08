@@ -120,7 +120,7 @@
   bg.setAttribute("aria-hidden", "true");
   bg.innerHTML =
     '<video class="site-bg-video" autoplay muted loop playsinline preload="auto">' +
-      '<source src="' + ROOT + 'assets/background.mp4" type="video/mp4" />' +
+      '<source src="' + ROOT + 'assets/hiroshima.mp4" type="video/mp4" />' +
     '</video>' +
     '<div class="site-bg-overlay"></div>';
   document.body.insertBefore(bg, document.body.firstChild);
