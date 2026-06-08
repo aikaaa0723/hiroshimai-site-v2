@@ -973,13 +973,7 @@ body { font-weight: 300; letter-spacing: .012em; }
 }
 .intro-lead .intro-c { opacity: 0; transition: opacity .1s ease; }
 .intro-lead .intro-c.on { opacity: 1; }
-.intro-caret {
-  display: inline-block; margin-left: .04em;
-  color: var(--accent-2); font-weight: 300;
-  animation: introCaretBlink .68s step-end infinite;
-}
-.intro-caret.off { animation: none; opacity: 0; }
-@keyframes introCaretBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+.intro-caret { display: none; }
 .intro-brand {
   margin-top: 30px;
   font-family: var(--font-en);
@@ -1045,15 +1039,8 @@ body.intro-lock { overflow: hidden; }
 .tw-c { opacity: 0; }
 .tw.tw-in .tw-c { opacity: 1; transition: opacity .09s ease; }
 
-/* 点滅カーソル */
-.tw-caret {
-  display: inline-block; margin-left: .04em;
-  color: var(--accent-2); opacity: 0; font-weight: 300;
-  transform: translateY(.02em);
-}
-.tw.tw-in .tw-caret { animation: twBlink .68s step-end infinite; }
-.tw.tw-done .tw-caret { animation: none; opacity: 0; }
-@keyframes twBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+/* カーソルは非表示（打ち込み棒を出さない） */
+.tw-caret { display: none; }
 
 /* --- フェード：長い段落・カード類（読みやすさのため補完演出） --- */
 .anim .lead-text, .anim .steps-lead, .anim .mission-sub, .anim .contact-lead,
