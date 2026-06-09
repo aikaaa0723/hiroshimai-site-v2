@@ -68,14 +68,14 @@
     "  float d = length(p);",
     "  float particle = smoothstep(0.5, 0.07, d);",
     "  float core = smoothstep(0.19, 0.01, d);",
-    "  vec3 aqua = vec3(0.20, 0.93, 0.86);",
-    "  vec3 ice = vec3(0.86, 0.98, 1.0);",
-    "  vec3 sun = vec3(1.0, 0.72, 0.36);",
-    "  vec3 deep = vec3(0.22, 0.50, 0.70);",
+    "  vec3 aqua = vec3(0.00, 0.79, 0.70);",   // brand teal #00cab2
+    "  vec3 ice = vec3(0.68, 0.73, 0.96);",    // periwinkle #aebaf4
+    "  vec3 sun = vec3(0.94, 0.00, 0.78);",    // brand magenta #f000c6
+    "  vec3 deep = vec3(0.33, 0.43, 0.98);",   // brand blue #536dfa
     "  vec3 color = mix(deep, aqua, vLayer);",
     "  color = mix(color, ice, fract(vSeed * 9.73) * 0.58);",
     "  color = mix(color, sun, vPulse * 0.72);",
-    "  color += core * vec3(0.36, 0.52, 0.60);",
+    "  color += core * vec3(0.30, 0.42, 0.72);",
     "  float alpha = particle * mix(0.22, 0.80, vLayer) * (0.72 + vPulse * 0.42);",
     "  gl_FragColor = vec4(color, alpha);",
     "}"
@@ -139,30 +139,31 @@
   }
 
   function buildParticles() {
-    var side = 900;
+    var side = 900;          // offscreen height (px)
+    var width = 1500;        // offscreen width (px) — wide enough for "AI"
     var off = document.createElement("canvas");
-    off.width = side;
+    off.width = width;
     off.height = side;
     var ctx = off.getContext("2d");
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = "800 760px Arial, Helvetica, sans-serif";
-    ctx.fillText("A", side / 2, side / 2 + 58);
+    ctx.font = "800 680px Arial, Helvetica, sans-serif";
+    ctx.fillText("AI", width / 2, side / 2 + 46);
 
-    var pixels = ctx.getImageData(0, 0, side, side).data;
+    var pixels = ctx.getImageData(0, 0, width, side).data;
     var data = { base: [], seed: [], size: [], layer: [] };
     var narrow = window.innerWidth < 760;
     var step = narrow ? 8 : 6;
-    var xOffset = narrow ? 0.08 : 0.42;
-    var xScale = narrow ? 1.08 : 1.42;
+    var xOffset = narrow ? 0.04 : 0.46;
+    var xScale = narrow ? 1.02 : 1.30;
     var yScale = narrow ? 1.38 : 1.60;
 
     for (var y = 0; y < side; y += step) {
-      for (var x = 0; x < side; x += step) {
-        var alpha = pixels[(y * side + x) * 4 + 3];
+      for (var x = 0; x < width; x += step) {
+        var alpha = pixels[(y * width + x) * 4 + 3];
         if (alpha < 42 || Math.random() > 0.76) continue;
-        var nx = (x / side - 0.5) * xScale + xOffset;
+        var nx = ((x - width / 2) / side) * xScale + xOffset;
         var ny = (0.5 - y / side) * yScale + 0.02;
         var layer = 0.58 + Math.random() * 0.42;
         pushParticle(

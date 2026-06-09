@@ -10,14 +10,18 @@
   --bg-alt: #0e1318;
   --panel: rgba(12, 16, 20, 0.58);
   --panel-2: rgba(16, 21, 26, 0.58);
-  --accent: #3fb8ad;        /* 統一アクア — solid fills */
-  --accent-2: #84e5d8;      /* 明るいアクア — links / highlights */
-  --gold: #84e5d8;          /* アクセント（旧goldの参照を流用） */
-  --metal: #c8d1d7;         /* プラチナ — 上質なラベル / 細線 */
+  --accent: #536dfa;        /* ブランド・ブルー — solid fills（sandboxトンマナ） */
+  --accent-2: #00cab2;      /* ティール — links / highlights */
+  --gold: #f000c6;          /* マゼンタのポップ（旧goldの参照を流用） */
+  --metal: #aebaf4;         /* ペリウィンクル — 上質なラベル / 細線 */
+  /* sandbox ブランドグラデーション */
+  --grad-brand: linear-gradient(-80deg, #1f91dd 0%, #536dfa 94%);
+  --grad-vivid: linear-gradient(112deg, #00cab2 25%, #f000c6 75%);
+  --grad-cta: linear-gradient(120deg, #5c86ff 0%, #5c29ff 50%, #00cab2 100%);
   --header-h: 66px;
   --maxw: 1200px;
-  --font: "Zen Kaku Gothic New", "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-en: "Jost", "Zen Kaku Gothic New", sans-serif;
+  --font: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-en: "Manrope", "Noto Sans JP", sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,7 +52,7 @@ body {
 .site-bg-overlay {
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(110% 80% at 80% 14%, rgba(110, 220, 208, 0.13), transparent 56%),
+    radial-gradient(110% 80% at 80% 14%, rgba(0, 202, 178, 0.13), transparent 56%),
     radial-gradient(120% 90% at 10% 92%, rgba(70, 190, 180, 0.12), transparent 62%),
     repeating-linear-gradient(0deg, rgba(150, 210, 215, 0.03) 0 1px, transparent 1px 52px),
     repeating-linear-gradient(90deg, rgba(150, 210, 215, 0.03) 0 1px, transparent 1px 52px),
@@ -194,13 +198,13 @@ img { max-width: 100%; display: block; }
   z-index: 1001;
   width: 96px;
   height: 96px;
-  border: 1px solid rgba(132, 229, 216, .46);
+  border: 1px solid rgba(0, 202, 178, .46);
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
   translate: -50% -50%;
   mix-blend-mode: screen;
-  box-shadow: 0 0 30px rgba(132, 229, 216, .22), inset 0 0 22px rgba(132, 229, 216, .08);
+  box-shadow: 0 0 30px rgba(0, 202, 178, .22), inset 0 0 22px rgba(0, 202, 178, .08);
   transition: opacity .18s ease;
 }
 .hero::before {
@@ -210,14 +214,14 @@ img { max-width: 100%; display: block; }
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(44% 52% at 72% 46%, rgba(132,229,216,.20), transparent 64%),
-    radial-gradient(34% 38% at 83% 38%, rgba(255,209,102,.11), transparent 70%);
+    radial-gradient(44% 52% at 72% 46%, rgba(0,202,178,.20), transparent 64%),
+    radial-gradient(34% 38% at 83% 38%, rgba(240,0,198,.10), transparent 70%);
   mix-blend-mode: screen;
 }
 .hero-overlay {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
-    radial-gradient(80% 70% at 80% 30%, rgba(110,220,208,.13), transparent 60%),
+    radial-gradient(80% 70% at 80% 30%, rgba(0,202,178,.13), transparent 60%),
     linear-gradient(90deg, rgba(4,6,8,.82) 0%, rgba(4,6,8,.44) 48%, rgba(4,6,8,.08) 100%),
     linear-gradient(0deg, rgba(4,6,8,.68) 0%, transparent 35%);
 }
@@ -243,7 +247,7 @@ img { max-width: 100%; display: block; }
   radial-gradient(circle at 75% 30%, rgba(31,111,235,.45), transparent 55%),
   linear-gradient(135deg, #06203b 0%, #0a2540 55%, #123a63 100%); }
 .hero-bg-2 { background:
-  radial-gradient(circle at 70% 70%, rgba(46,204,153,.4), transparent 55%),
+  radial-gradient(circle at 70% 70%, rgba(0,202,178,.4), transparent 55%),
   linear-gradient(135deg, #06231a 0%, #0b3d2e 60%, #145c44 100%); }
 .hero-bg-3 { background:
   radial-gradient(circle at 78% 35%, rgba(160,90,230,.45), transparent 55%),
@@ -700,7 +704,7 @@ a.service-card .service-go::after { content: " →"; }
 
 .home-recruit {
   position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #0b3d2e, #145c44);
+  background: linear-gradient(135deg, #122a6b, #2a1466);
   color: #fff; text-align: center; padding: 90px 24px;
 }
 .home-recruit h2 { font-size: clamp(24px, 4vw, 38px); font-weight: 900; margin-bottom: 14px; }
@@ -824,7 +828,7 @@ a.service-card .service-go::after { content: " →"; }
 /* atmospheric dark gradients (差し替え) */
 .company {
   background:
-    radial-gradient(90% 80% at 80% 20%, rgba(56,214,255,.13), transparent 55%),
+    radial-gradient(90% 80% at 80% 20%, rgba(92,134,255,.13), transparent 55%),
     linear-gradient(135deg, rgba(7,15,18,.90) 0%, rgba(9,20,24,.86) 55%, rgba(11,30,34,.84) 100%);
 }
 .rep-photo {
@@ -836,13 +840,14 @@ a.service-card .service-go::after { content: " →"; }
 .rep-history li span { color: var(--accent-2); }
 .page-hero {
   background:
-    radial-gradient(90% 80% at 82% 22%, rgba(56,214,255,.15), transparent 55%),
+    radial-gradient(90% 80% at 82% 22%, rgba(92,134,255,.15), transparent 55%),
     linear-gradient(135deg, rgba(6,12,15,.88) 0%, rgba(9,22,26,.82) 60%, rgba(12,34,38,.80) 100%);
 }
 .home-recruit {
   background:
-    radial-gradient(80% 80% at 20% 30%, rgba(56,214,255,.13), transparent 55%),
-    linear-gradient(135deg, rgba(7,28,28,.90), rgba(11,50,48,.84));
+    radial-gradient(80% 80% at 20% 30%, rgba(92,134,255,.16), transparent 55%),
+    radial-gradient(70% 70% at 85% 80%, rgba(240,0,198,.12), transparent 60%),
+    linear-gradient(135deg, rgba(18,30,90,.90), rgba(36,16,90,.84));
 }
 
 /* footer — keep deepest tone, align hairlines */
@@ -863,7 +868,7 @@ a.service-card .service-go::after { content: " →"; }
 
 /* neon-lit labels */
 .hero-kicker, .block-head .en, .page-hero .en, .section-jp {
-  text-shadow: 0 0 16px rgba(56, 214, 255, 0.55);
+  text-shadow: 0 0 16px rgba(92, 134, 255, 0.55);
 }
 .brand-ai { text-shadow: 0 0 12px rgba(60, 230, 196, 0.65); }
 
@@ -871,8 +876,8 @@ a.service-card .service-go::after { content: " →"; }
 .site-header .btn-contact { box-shadow: 0 0 0 1px rgba(60,230,196,.40), 0 0 18px rgba(60,230,196,.35); }
 .contact-btn { box-shadow: 0 0 26px rgba(21,168,146,.50); }
 .contact-btn:hover { box-shadow: 0 0 34px rgba(60,230,196,.65); }
-.hero-link { box-shadow: 0 0 18px rgba(56,214,255,.22); }
-.hero-link:hover { box-shadow: 0 0 28px rgba(56,214,255,.5); }
+.hero-link { box-shadow: 0 0 18px rgba(92,134,255,.22); }
+.hero-link:hover { box-shadow: 0 0 28px rgba(92,134,255,.5); }
 
 /* cards: neon edge on emphasis / hover */
 .service-card:hover {
@@ -933,14 +938,14 @@ body { font-weight: 300; letter-spacing: .012em; }
 .brand-ai { text-shadow: none; }
 
 /* soften the neon → quiet, premium light */
-.site-header .btn-contact { box-shadow: 0 0 0 1px rgba(132,229,216,.28); }
-.contact-btn { box-shadow: 0 0 22px rgba(63,184,173,.24); }
-.contact-btn:hover { box-shadow: 0 0 30px rgba(132,229,216,.42); }
+.site-header .btn-contact { box-shadow: 0 0 0 1px rgba(0,202,178,.28); }
+.contact-btn { box-shadow: 0 0 22px rgba(0,202,178,.24); }
+.contact-btn:hover { box-shadow: 0 0 30px rgba(0,202,178,.42); }
 .hero-link, .hero-link:hover { box-shadow: none; }
-.service-card:hover { border-color: rgba(132,229,216,.42); box-shadow: 0 20px 54px rgba(0,0,0,.55); }
-.service-card::before, .plan-card-featured::before { box-shadow: 0 0 10px rgba(132,229,216,.5); }
-.plan-card-featured { box-shadow: 0 0 0 1px rgba(132,229,216,.34), 0 20px 54px rgba(0,0,0,.5); }
-.value-card:hover, .job-card:hover { border-color: rgba(132,229,216,.32); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+.service-card:hover { border-color: rgba(0,202,178,.42); box-shadow: 0 20px 54px rgba(0,0,0,.55); }
+.service-card::before, .plan-card-featured::before { box-shadow: 0 0 10px rgba(0,202,178,.5); }
+.plan-card-featured { box-shadow: 0 0 0 1px rgba(0,202,178,.34), 0 20px 54px rgba(0,0,0,.5); }
+.value-card:hover, .job-card:hover { border-color: rgba(0,202,178,.32); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
 .step-day, .news-cat, .pt-box-accent { box-shadow: none; }
 .plan-card-featured::before { content: "おすすめ"; }
 
@@ -951,7 +956,7 @@ body { font-weight: 300; letter-spacing: .012em; }
   display: flex; align-items: flex-end; justify-content: center;
   overflow: hidden;
   background:
-    radial-gradient(78% 62% at 50% 30%, rgba(132,229,216,.20), transparent 64%),
+    radial-gradient(78% 62% at 50% 30%, rgba(0,202,178,.20), transparent 64%),
     linear-gradient(165deg, #0f1c1a 0%, #0a1311 100%);
   border: 1px solid rgba(255,255,255,.10);
 }
@@ -983,7 +988,7 @@ body { font-weight: 300; letter-spacing: .012em; }
   position: fixed; inset: 0; z-index: 4000;
   display: flex; align-items: center; justify-content: center;
   background:
-    radial-gradient(120% 90% at 50% 40%, rgba(63,184,173,.10), transparent 60%),
+    radial-gradient(120% 90% at 50% 40%, rgba(0,202,178,.10), transparent 60%),
     #05070a;
   overflow: hidden;
   animation: introOut 5s ease forwards;
@@ -1138,3 +1143,63 @@ body.intro-lock { overflow: hidden; }
   .profile-table td { padding: 16px 12px; }
   .page-section { padding: 56px 18px; }
 }
+
+/* ============================================================
+   Brand tone & manner — sandbox風（青→紫→マゼンタ／ティールのグラデ）
+   配色のみ：ダークベースは維持しつつ、CTA・アクセントをブランド化
+   ============================================================ */
+
+/* グラデ塗りの主要CTA（sandboxの矢印付きグラデボタン） */
+.btn-contact,
+.site-header .btn-contact,
+.contact-btn,
+.form-submit {
+  background: var(--grad-cta);
+  background-size: 180% 180%;
+  background-position: 0 0;
+  color: #fff;
+  border: none;
+  transition: background-position .4s ease, transform .2s ease, box-shadow .25s ease;
+}
+.btn-contact:hover,
+.site-header .btn-contact:hover,
+.contact-btn:hover,
+.form-submit:hover {
+  background: var(--grad-cta);
+  background-size: 180% 180%;
+  background-position: 100% 0;
+  color: #fff;
+}
+
+/* アウトライン系：ベースはブランドグラデ塗り、ホバーで鮮やかに */
+.more-link {
+  color: #fff;
+  border: 1px solid transparent;
+  background: var(--grad-brand);
+}
+.more-link:hover { color: #fff; background: var(--grad-vivid); }
+.home-recruit .more-link {
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .6);
+}
+.home-recruit .more-link:hover { background: var(--grad-vivid); border-color: transparent; color: #fff; }
+
+/* hero-link はダーク上のアウトライン維持 → ホバーでグラデ塗り */
+.hero-link:hover { background: var(--grad-cta); border-color: transparent; color: #fff; }
+
+/* ブランドロゴの "AI" と 数字バッジ・英字ラベルをグラデのテキストクリップで */
+.brand-ai,
+.hero-kicker,
+.block-head .en,
+.service-num,
+.v-num,
+.plan-tag {
+  background: var(--grad-vivid);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ヒーローのスライドドット（アクティブ）をブランドブルーに */
+.hero-dots button.active { background: var(--accent); }
