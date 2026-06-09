@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("anim");</script>
+  <title>お問い合わせ | HiroshimAI株式会社</title>
+  <meta name="description" content="HiroshimAI株式会社へのお問い合わせ。サービスのご相談・無料ヒアリング・採用のお問い合わせはこちらから。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <h1>Contact</h1>
+        <p class="page-jp">お問い合わせ</p>
+      </div>
+    </section>
+    <nav class="breadcrumb" aria-label="パンくず">
+      <ol>
+        <li><a href="index.html">ホーム</a></li>
+        <li>お問い合わせ</li>
+      </ol>
+    </nav>
+
+    <section class="page-section">
+      <div class="contact-wrap">
+        <p class="lead-text">サービスのご相談、無料ヒアリングのお申し込み、採用のお問い合わせまで、お気軽にお寄せください。</p>
+
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <label for="cname">お名前<span class="req">必須</span></label>
+            <input type="text" id="cname" name="name" required autocomplete="name" />
+          </div>
+          <div class="form-row">
+            <label for="ccompany">会社名</label>
+            <input type="text" id="ccompany" name="company" autocomplete="organization" />
+          </div>
+          <div class="form-row">
+            <label for="cemail">メールアドレス<span class="req">必須</span></label>
+            <input type="email" id="cemail" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-row">
+            <label for="ctopic">お問い合わせ種別</label>
+            <select id="ctopic" name="topic">
+              <option>AI研修について</option>
+              <option>AI顧問について</option>
+              <option>受託開発について</option>
+              <option>IoT開発について</option>
+              <option>採用について</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="cmsg">お問い合わせ内容<span class="req">必須</span></label>
+            <textarea id="cmsg" name="message" required></textarea>
+          </div>
+          <button type="submit" class="form-submit">この内容で送信する</button>
+        </form>
+        <p class="contact-note">送信ボタンを押すと、ご利用のメールソフトが起動し本文が自動入力されます。</p>
+
+        <div class="contact-direct">
+          <p>メールソフトが使えない場合は、こちらまで直接お送りください。</p>
+          <p><a href="mailto:info@hiroshimai.example">info@hiroshimai.example</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="app-footer"></div>
+  <script src="js/layout.js"></script>
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = e.target;
+      var subject = "【お問い合わせ】" + (f.topic.value || "");
+      var body =
+        "お名前: " + f.name.value + "\n" +
+        "会社名: " + f.company.value + "\n" +
+        "メール: " + f.email.value + "\n" +
+        "種別: " + f.topic.value + "\n\n" +
+        f.message.value;
+      window.location.href =
+        "mailto:info@hiroshimai.example?subject=" +
+        encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+  </script>
+</body>
+</html>
